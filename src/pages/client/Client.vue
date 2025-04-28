@@ -8,7 +8,7 @@
           @click="goToRegister"
           class="register-btn"/>
       <BasePopup :visible="showDialog" title="거래처 등록" @close="showDialog = false">
-        <!-- 팝업 안에 들어갈 폼 -->
+
         <p>여기서 거래처 등록</p>
       </BasePopup>
     </div>
