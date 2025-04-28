@@ -1,19 +1,76 @@
-<script setup>
-import { useRouter } from "vue-router";
+<template>
+  <header class="header">
+    <div class="header-inner">
+      <router-link to="/" class="logo">Recovery</router-link>
 
-const router = useRouter();
+      <nav class="nav">
+        <router-link to="/">거래처 회수율</router-link>
+        <router-link to="/predict">회수 지연 예측</router-link>
+        <router-link to="/sales">거래 등록</router-link>
+        <router-link to="/client">거래처 등록</router-link>
+      </nav>
+    </div>
+  </header>
 
-const gotoClient = () => {
-  router.push('/client');
+  <main class="content">
+    <router-view />
+  </main>
+</template>
+
+<style>
+.header {
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  background-color: white;
 }
 
+.header-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px; /* 여기 padding 크게 */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
 
-</script>
+/* 로고 */
+.logo {
+  font-weight: 800;
+  font-size: 20px;
+  color: #000;
+}
 
-<template>
-  <div>test</div>
-  <div>
-    <h1>router- client 이동</h1>
-    <button @click="gotoClient" >Client 페이지 이동</button>
-  </div>
-</template>
+/* 메뉴 */
+.nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 32px;
+}
+
+.nav a {
+  color: #000;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+/* 본문 영역 */
+.content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px 32px 64px; /* 왼쪽 패딩을 크게! */
+  min-height: calc(100vh - 60px); /* 헤더 빼고 채우기 */
+  box-sizing: border-box;
+}
+
+</style>

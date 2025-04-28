@@ -59,10 +59,12 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left; /* 텍스트도 기본 왼쪽 정렬 */
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: light) {
