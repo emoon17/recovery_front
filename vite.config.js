@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/test': {  //  /api로 수정 예정
-        target: 'http://localhost:8080',  // 백엔드 서버로 보내라
+        target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path, // 경로 그대로
       },

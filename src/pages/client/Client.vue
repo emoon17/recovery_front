@@ -2,14 +2,14 @@
 import {useCounterStore} from '@/store/counter'
 import {client} from "@/api/client.js";
 import {onMounted, ref} from "vue";
-import axios from "axios";
+import api from '@/api/axios'
 
 // const counter = useCounterStore();
-const testName = ref("");
+const testEmail = ref("");
 const fetchTest = async () =>{
   try{
-    const res = await axios.get(client.url.selectFindId);
-    testName.value = res.data;
+    const res = await api.get(client.url.selectFindId);
+    testEmail.value = res.data;
   }catch (e){
     console.log(e);
   }
@@ -23,6 +23,6 @@ onMounted(()=>{
 <template>
   <div>test</div>
   <div>
-    <h1>testName::: {{testName}}</h1>
+    <h1>testEmail::: {{testEmail}}</h1>
   </div>
 </template>
