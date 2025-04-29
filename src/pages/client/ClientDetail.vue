@@ -5,7 +5,7 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import BasePopup from "@/pages/common/BasePopup.vue";
 
-defineProps({
+const props =defineProps({
   selectedClient: {
     type: Object,
     required: true
@@ -16,7 +16,7 @@ defineProps({
   }
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'updateClient', 'deleteClient']);
 
 const isEditable = ref(false);
 
@@ -27,6 +27,8 @@ const goToEdit = async () => {
 
 // 수정 완료 버튼 클릭 시
 const submitChanges = () => {
+  console.log("Client Detail >>> selectedClient :: ", props.selectedClient);
+  emit('updateClient', props.selectedClient);
   isEditable.value = false; // 수정 모드를 종료
 }
 
@@ -35,9 +37,15 @@ const cancelEdit = () => {
   isEditable.value = false;
 }
 
+// 삭제 버튼 클릭 시
+const deleteClient = () => {
+  console.log("Client Detail >>> deleteClient :: ", props.selectedClient.clientId);
+  emit('deleteClient', props.selectedClient.clientId); // 부모한테 삭제 요청 알림
+}
+
 // 팝업 닫을 때 값 복원 처리 (X 버튼 클릭 시)
 const handleClose = () => {
-  emit('close'); // 부모로 close 이벤트 전달
+  emit('close');
 }
 </script>
 

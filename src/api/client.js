@@ -1,11 +1,15 @@
-const client = {};
+const clientApi = {};
 
-client.url = {};
+clientApi.url = {};
 
 // test
-client.url.selectFindId = "/api/client/id";
+clientApi.url.selectFindId = "/api/client/id";
 
 // 거래처 전체 리스트 조회
-client.url.getAllClients = "/api/client/getAllClients"
+clientApi.url.getAllClients = "/api/client/getAllClients"
+// 거래처 수정
+clientApi.url.updateClient = "/api/client/updateClient"
+// 거래처 삭제
+clientApi.url.deleteClient = "/api/client/deleteClient"
 
-export {client};
+export {clientApi};
