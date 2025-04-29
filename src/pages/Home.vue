@@ -6,7 +6,7 @@
       <nav class="nav">
         <router-link to="/">거래처 회수율</router-link>
         <router-link to="/predict">회수 지연 예측</router-link>
-        <router-link to="/sales">거래 등록</router-link>
+        <router-link to="/transaction">거래 등록</router-link>
         <router-link to="/client">거래처 등록</router-link>
       </nav>
     </div>
