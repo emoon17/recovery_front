@@ -2,7 +2,8 @@
   <div class="transaction-page">
 
     <!-- 거래 등록 -->
-    <TransactionRegister />
+    <TransactionRegister :showDialog="showDialog" @open="handleOpen" @close="handleClose"  />
+
 
     <!-- 검색 폼 -->
     <TransactionSearchForm :searchForm="searchForm" @fetchTransactionList="fetchTransactionList"/>
@@ -26,6 +27,8 @@ const searchForm = ref({
 
 const transactions = ref([]);
 
+const showDialog = ref(false);
+
 onMounted(()=> {
   fetchTransactionList();
 });
@@ -45,6 +48,15 @@ const fetchTransactionList = () => {
       recoveryDate: '2025-05-10',
     },
   ];
+};
+
+const handleOpen = () =>{
+  showDialog.value = true;
+}
+
+// 팝업 닫을 때 상태 변경
+const handleClose = () => {
+  showDialog.value = false; // 팝업 닫기
 };
 </script>
 

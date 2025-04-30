@@ -9,6 +9,8 @@ import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
+import InputText from "primevue/inputtext";
+import Calendar from "primevue/calendar";
 
 const app = createApp(App)
 
@@ -17,4 +19,6 @@ app.use(router)
 app.use(PrimeVue)
 app.use(ToastService)
 app.component('Toast', Toast)
+app.component("InputText", InputText)
+app.component('Calendar', Calendar);
 app.mount('#app')

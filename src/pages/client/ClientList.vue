@@ -18,7 +18,14 @@ const onRowClick = (e) => {
 
 <template>
   <!-- 거래처 리스트 -->
-  <DataTable :value="clients" class="client-table"  @row-click="onRowClick" >
+  <DataTable
+      :value="clients"
+      class="client-table"
+      @row-click="onRowClick"
+      :paginator="true"
+      :rows="10"
+      :rowsPerPageOptions="[10, 20, 30]"
+  >
     <Column field="name" header="거래처명"/>
     <Column field="industry" header="업종"/>
     <Column field="email" header="이메일"/>
