@@ -116,7 +116,6 @@ const fetchClientList = async () => {
  * 거래 등록
  * */
 const insertTransaction = async (transaction) => {
-  console.log("transaction ??? :::: ", transaction);
   try {
     const res = await api.post(transactionApi.url.insertTransaction, transaction);
     console.log("res::: ", res);

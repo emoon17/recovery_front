@@ -14,19 +14,19 @@ import {computed, ref} from "vue";
 
 const props = defineProps({
   showDialog: Boolean,
-  clients : Array
+  clients: Array
 });
 
 const emit = defineEmits(['open', 'close', 'insertTransaction']);
 
 const transaction = ref({
-  clientId : '',
+  clientId: '',
   businessNumber: '',
   name: '',
   transactionDate: '',
   transactionAmount: 0,
   recoveredAmount: 0,
-  expectedPaymentDate : ''
+  expectedPaymentDate: ''
 });
 
 
@@ -69,9 +69,9 @@ const handleClose = () => {
   emit('close');
 };
 
+// 거래 등록
 const insertTransaction = () => {
   transaction.value.transactionDate = new Date(transaction.value.transactionDate).toISOString().substring(0, 10);
-  transaction.value.expectedPaymentDate = new Date(transaction.value.expectedPaymentDate).toISOString().substring(0, 10);
   emit('insertTransaction', transaction.value);
   handleClose();
 
@@ -98,9 +98,7 @@ const isFormValid = computed(() => {
       t.transactionDate instanceof Date &&
       !isNaN(t.transactionDate) &&
       typeof t.transactionAmount === 'number' &&
-      typeof t.recoveredAmount === 'number' &&
-      t.expectedPaymentDate instanceof Date &&
-      !isNaN(t.expectedPaymentDate)
+      typeof t.recoveredAmount === 'number'
   );
 });
 </script>
@@ -126,7 +124,7 @@ const isFormValid = computed(() => {
             @input="onSearch"
             @focus="onSearch"
             @blur="handleBlur"
-            placeholder="거래처명" />
+            placeholder="거래처명"/>
         <ul v-if="showSuggestions && filteredClients.length" class="suggestions">
           <li
               v-for="item in filteredClients"
@@ -138,7 +136,7 @@ const isFormValid = computed(() => {
         </ul>
       </div>
       <div class="form-item">
-        <InputText v-model="transaction.businessNumber" placeholder="사업자번호" />
+        <InputText v-model="transaction.businessNumber" placeholder="사업자번호"/>
       </div>
       <div class="form-item">
         <DatePicker
@@ -154,29 +152,22 @@ const isFormValid = computed(() => {
             v-model="transaction.transactionAmount"
             @input="onlyNumberInput('transactionAmount')"
             :value="formatCurrency(transaction.transactionAmount)"
-            placeholder="외상금액" />
+            placeholder="외상금액"/>
       </div>
       <div class="form-item">
         <InputText
             v-model="transaction.recoveredAmount"
             @input="onlyNumberInput('recoveredAmount')"
             :value="formatCurrency(transaction.recoveredAmount)"
-            placeholder="회수금액" />
+            placeholder="회수금액"/>
       </div>
       <div class="form-item">
-        <DatePicker
-            v-model="transaction.expectedPaymentDate"
-            input-class="calendar-input"
-            placement="bottom"
-            placeholder="회수 예정 일자"
-            date-format="yy.mm.dd"
-        />
+        <Button
+            label="등록하기"
+            @click="insertTransaction"
+            class="submit-btn"
+            :disabled="!isFormValid"/>
       </div>
-      <Button
-          label="등록하기"
-          @click="insertTransaction"
-          class="submit-btn"
-          :disabled="!isFormValid" />
     </div>
   </BasePopup>
 
@@ -224,12 +215,13 @@ const isFormValid = computed(() => {
   width: 100%;
 }
 
-.submit-btn{
+.submit-btn {
   width: 100%;
   background-color: #b0b0b8;
   border: none;
 }
-.submit-btn:hover{
+
+.submit-btn:hover {
   background-color: #4e4e53;
   transform: scale(1.05);
 }
