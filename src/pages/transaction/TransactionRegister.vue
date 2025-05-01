@@ -5,26 +5,39 @@ import InputText from 'primevue/inputtext';
 import BasePopup from "@/pages/common/BasePopup.vue";
 import DatePicker from "@vuepic/vue-datepicker";
 import '@vuepic/vue-datepicker/dist/main.css';
+import {useToast} from 'primevue/usetoast';
 
-import {ref} from "vue";
+const toast = useToast();
+
+import {computed, ref} from "vue";
 
 
 const props = defineProps({
-  showDialog: Boolean
+  showDialog: Boolean,
+  clients : Array
 });
 
-const allClients = ref([
-  { name: '천재교육', businessNumber: '232423423424' },
-  { name: '천재IT', businessNumber: '987654321012' },
-  { name: '네이버', businessNumber: '1234567890' }
-])
+const emit = defineEmits(['open', 'close', 'insertTransaction']);
+
+const transaction = ref({
+  clientId : '',
+  businessNumber: '',
+  name: '',
+  transactionDate: '',
+  transactionAmount: 0,
+  recoveredAmount: 0,
+  expectedPaymentDate : ''
+});
+
+
 const showSuggestions = ref(false)
 const filteredClients = ref([])
 
+// 자동완성용 검색 로직
 const onSearch = () => {
-  const keyword = transaction.value.clientName.trim()
+  const keyword = transaction.value.name.trim()
   if (keyword.length > 0) {
-    filteredClients.value = allClients.value.filter(client =>
+    filteredClients.value = props.clients.filter(client =>
         client.name.includes(keyword)
     )
     showSuggestions.value = true
@@ -34,7 +47,8 @@ const onSearch = () => {
   }
 }
 const selectClient = (item) => {
-  transaction.value.clientName = item.name
+  transaction.value.clientId = item.clientId;
+  transaction.value.name = item.name
   transaction.value.businessNumber = item.businessNumber
   showSuggestions.value = false
 }
@@ -45,16 +59,6 @@ const handleBlur = () => {
   }, 100)
 }
 
-const emit = defineEmits(['open', 'close']);
-
-const transaction = ref({
-  businessNumber: '',
-  clientName: '',
-  transactionDate: '',
-  creditAmount: '',
-  recoveryAmount: '',
-  recoveryDate: ''
-});
 
 // 거래처 등록 팝업
 const goToRegister = () => {
@@ -65,15 +69,40 @@ const handleClose = () => {
   emit('close');
 };
 
-const submitTransaction = () => {
-  console.log("📦 거래 등록 정보:", transaction.value);
-
-
-  // 팝업 닫고
+const insertTransaction = () => {
+  transaction.value.transactionDate = new Date(transaction.value.transactionDate).toISOString().substring(0, 10);
+  transaction.value.expectedPaymentDate = new Date(transaction.value.expectedPaymentDate).toISOString().substring(0, 10);
+  emit('insertTransaction', transaction.value);
   handleClose();
 
 };
 
+//포맷팅
+const onlyNumberInput = (field) => {
+  const raw = transaction.value[field]?.toString().replace(/[^\d]/g, '');
+  transaction.value[field] = raw ? parseInt(raw, 10) : 0;
+};
+
+const formatCurrency = (value) => {
+  if (value === null || value === undefined) return '';
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+// validation
+const isFormValid = computed(() => {
+  const t = transaction.value;
+  return (
+      t.clientId &&
+      t.name &&
+      t.businessNumber &&
+      t.transactionDate instanceof Date &&
+      !isNaN(t.transactionDate) &&
+      typeof t.transactionAmount === 'number' &&
+      typeof t.recoveredAmount === 'number' &&
+      t.expectedPaymentDate instanceof Date &&
+      !isNaN(t.expectedPaymentDate)
+  );
+});
 </script>
 
 <template>
@@ -93,7 +122,7 @@ const submitTransaction = () => {
     <div class="form-wrap">
       <div class="form-item auto-complete">
         <InputText
-            v-model="transaction.clientName"
+            v-model="transaction.name"
             @input="onSearch"
             @focus="onSearch"
             @blur="handleBlur"
@@ -121,20 +150,33 @@ const submitTransaction = () => {
         />
       </div>
       <div class="form-item">
-        <InputText v-model="transaction.creditAmount" placeholder="외상금액" />
+        <InputText
+            v-model="transaction.transactionAmount"
+            @input="onlyNumberInput('transactionAmount')"
+            :value="formatCurrency(transaction.transactionAmount)"
+            placeholder="외상금액" />
       </div>
       <div class="form-item">
-        <InputText v-model="transaction.recoveryAmount" placeholder="회수금액" />
+        <InputText
+            v-model="transaction.recoveredAmount"
+            @input="onlyNumberInput('recoveredAmount')"
+            :value="formatCurrency(transaction.recoveredAmount)"
+            placeholder="회수금액" />
       </div>
       <div class="form-item">
         <DatePicker
-            v-model="transaction.recoveryDate"
+            v-model="transaction.expectedPaymentDate"
             input-class="calendar-input"
             placement="bottom"
-            placeholder="회수일자"
-            date-format="yy.mm.dd"/>
+            placeholder="회수 예정 일자"
+            date-format="yy.mm.dd"
+        />
       </div>
-      <Button label="등록하기" @click="submitTransaction" class="submit-btn" />
+      <Button
+          label="등록하기"
+          @click="insertTransaction"
+          class="submit-btn"
+          :disabled="!isFormValid" />
     </div>
   </BasePopup>
 

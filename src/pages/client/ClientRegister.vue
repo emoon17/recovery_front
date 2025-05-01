@@ -38,8 +38,8 @@ const formatBusinessNumber = (e) => {
   }
 
   //  하이픈 포맷 적용
-  if (value.length > 5) {
-    value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5);
+  if (value.length > 4) {
+    value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(4);
   } else if (value.length > 3) {
     value = value.slice(0, 3) + '-' + value.slice(3);
   }
@@ -142,7 +142,7 @@ const submitClient = () => {
             @input="formatBusinessNumber"
             @blur="validateBusinessNumber"
             placeholder="'-' 없이 숫자만 입력해주세요"
-            :maxlength="13"/>
+            :maxlength="12"/>
       </div>
       <div class="form-item">
         <label>거래처명</label>

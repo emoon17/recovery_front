@@ -90,7 +90,7 @@ const deleteClient = async (clientId) => {
     handleClose();
     toast.add({ severity: 'success', summary: '삭제 완료', detail: '거래처 정보가 삭제되었습니다.', life: 3000 });
   } catch (e){
-    console.log('client >>> deleteClient ::', e)
+    console.log('client >>> deleteClient ::', e);
     toast.add({ severity: 'error', summary: '삭제 실패', detail: '서버 오류가 발생했습니다.', life: 3000 });
   }
 }

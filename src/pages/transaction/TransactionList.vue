@@ -21,6 +21,7 @@ defineProps({
       <Column field="transactionAmount" header="외상대"/>
       <Column field="recoveredAmount" header="회수금액"/>
       <Column field="recoveredDate" header="회수날짜"/>
+      <Column field="expectedPaymentDate" header="회수예정일"></Column>
     </DataTable>
   </div>
 </template>

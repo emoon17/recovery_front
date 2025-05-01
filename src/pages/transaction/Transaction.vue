@@ -2,8 +2,8 @@
   <div class="transaction-page">
 
     <!-- 거래 등록 -->
-    <TransactionRegister :showDialog="showDialog" @open="handleOpen" @close="handleClose"  />
-
+    <TransactionRegister :showDialog="showDialog" :clients="clients" @insertTransaction="insertTransaction"
+                         @open="handleOpen" @close="handleClose"/>
 
     <!-- 검색 폼 -->
     <TransactionSearchForm :searchForm="searchForm" :clients="clients" @fetchTransactionList="fetchTransactionList"/>
@@ -22,6 +22,9 @@ import TransactionRegister from "@/pages/transaction/TransactionRegister.vue";
 import api from "@/api/axios.js";
 import {transactionApi} from "@/api/transaction.js";
 import {clientApi} from "@/api/client.js";
+import {useToast} from 'primevue/usetoast';
+
+const toast = useToast();
 
 
 const transactions = ref([]);
@@ -30,7 +33,7 @@ const clients = ref([]);
 const showDialog = ref(false);
 
 const searchForm = ref({
-  clientId : '',
+  clientId: '',
   businessNumber: '',
   name: '',
 });
@@ -38,12 +41,12 @@ const searchForm = ref({
 
 transactions.value = [
   {
-    clientId : '',                      // 거래처아이디
+    clientId: '',                      // 거래처아이디
     businessNumber: '',                 // 거래처사업자번호
     name: '',                           // 거래처명
     transactionDate: '',                // 거래날짜
     transactionAmount: 0,               // 거래 금액
-    recoveredDate : '',                 // 회수날짜
+    recoveredDate: '',                 // 회수날짜
     recoveredAmount: 0,                 // 회수금액
     expectedPaymentDate: '',  // 회수 예정일
   },
@@ -51,13 +54,13 @@ transactions.value = [
 
 clients.value = [
   {
-    clientId : '',                      // 거래처아이디
+    clientId: '',                      // 거래처아이디
     businessNumber: '',                 // 거래처사업자번호
     name: '',                           // 거래처명
   }
 ]
 
-onMounted(()=> {
+onMounted(() => {
   fetchTransactionList();
   fetchClientList();
 });
@@ -90,7 +93,7 @@ const fetchTransactionList = async (searchForm) => {
       businessNumber: formatBusinessNumber(item.businessNumber),
     }));
     console.log("transactions.value::: ", transactions.value);
-  }catch (e){
+  } catch (e) {
     console.log("fetchTransactionList error :::  ", e);
   }
 
@@ -109,7 +112,27 @@ const fetchClientList = async () => {
   }
 }
 
-const handleOpen = () =>{
+/**
+ * 거래 등록
+ * */
+const insertTransaction = async (transaction) => {
+  console.log("transaction ??? :::: ", transaction);
+  try {
+    const res = await api.post(transactionApi.url.insertTransaction, transaction);
+    console.log("res::: ", res);
+    if (res.data.success === 200) {
+      toast.add({severity: 'success', summary: '등록 완료', detail: '거래가 등록되었습니다.', life: 3000})
+    } else {
+      toast.add({severity: 'error', summary: '등록 실패', detail: '서버 오류가 발생했습니다.', life: 3000});
+
+    }
+  } catch (e) {
+    console.log("transaction >>> insertTransaction error ::: ", e);
+    toast.add({severity: 'error', summary: '등록 실패', detail: '서버 오류가 발생했습니다.', life: 3000});
+  }
+}
+
+const handleOpen = () => {
   showDialog.value = true;
 }
 
