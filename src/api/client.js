@@ -11,5 +11,7 @@ clientApi.url.getAllClients = "/api/client/getAllClients"
 clientApi.url.updateClient = "/api/client/updateClient"
 // 거래처 삭제
 clientApi.url.deleteClient = "/api/client/deleteClient"
+// 거래처 등록
+clientApi.url.insertClient = "/api/client/insertClient"
 
 export {clientApi};
