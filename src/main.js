@@ -11,6 +11,8 @@ import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import InputText from "primevue/inputtext";
 import Calendar from "primevue/calendar";
+import Dialog from "primevue/dialog";
+
 
 const app = createApp(App)
 
@@ -21,4 +23,5 @@ app.use(ToastService)
 app.component('Toast', Toast)
 app.component("InputText", InputText)
 app.component('Calendar', Calendar);
+app.component('Dialog', Dialog)
 app.mount('#app')
