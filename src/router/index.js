@@ -3,7 +3,7 @@ import Home from '@/pages/Home.vue'
 import Client from '@/pages/client/Client.vue'
 import ClientRegister from "../pages/client/ClientRegister.vue";
 import Transaction from "@/pages/transaction/Transaction.vue";
-import RecoveryChart from "@/pages/recovery/RecoveryChart.vue";
+import RecoveryChart from "@/pages/recovery/RecoveryStats.vue";
 
 const routes = [
     {
