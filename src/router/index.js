@@ -4,6 +4,7 @@ import Client from '@/pages/client/Client.vue'
 import ClientRegister from "../pages/client/ClientRegister.vue";
 import Transaction from "@/pages/transaction/Transaction.vue";
 import RecoveryChart from "@/pages/recovery/RecoveryStats.vue";
+import PredictRisk from "@/pages/predict/PredictRisk.vue";
 
 const routes = [
     {
@@ -14,7 +15,7 @@ const routes = [
             { path: 'client/register', component: ClientRegister },
             { path: 'transaction', component: Transaction },
             { path: '', component: RecoveryChart },
-            // { path: 'risk', component: RiskPrediction },
+            { path: 'predict', component: PredictRisk },
         ]
     }
 ]
