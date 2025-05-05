@@ -54,12 +54,6 @@ const handleBlur = () => {
 
 <template>
   <div class="search-form">
-    <!-- 사업자번호 입력 -->
-    <InputText
-        v-model="searchForm.businessNumber"
-        placeholder="사업자번호 입력"
-    />
-
     <!-- 거래처명 입력 + 자동완성 -->
     <div class="autocomplete-wrapper">
       <InputText
@@ -82,7 +76,11 @@ const handleBlur = () => {
         </li>
       </ul>
     </div>
-
+    <!-- 사업자번호 입력 -->
+    <InputText
+        v-model="searchForm.businessNumber"
+        placeholder="사업자번호 입력"
+    />
     <Button
         label="검색"
         class="search-btn"
