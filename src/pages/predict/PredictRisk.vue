@@ -33,7 +33,7 @@ const riskOptions = [
 
 // 예측 결과
 const predictionList = ref([]);
-
+const selectedDate = ref('')
 /**
  * 회수 지연 예측 전체 리스트 조회
  * */
@@ -41,7 +41,14 @@ const fetchAllPredicts = async () =>{
   try {
     const res = await api.get(predictApi.url.getAllPredicts);
     predictionList.value = res.data.data;
-    console.log("res ::::: ", res.data)
+
+    const latestDate = predictionList.value
+        .map(p => p.createdAt?.slice(0, 10))
+        .filter(Boolean)
+        .sort()
+        .reverse()[0]  // 가장 최근 날짜
+
+    selectedDate.value = latestDate
   }catch (e){
     console.log("fetchAllPredicts error ::: ", e);
   }
@@ -60,13 +67,6 @@ const calculatedStats = computed(() => ({
   ).toFixed(2)
 }))
 
-// 표 날짜 선택
-const selectedDate = ref(getYesterday())
-function getYesterday() {
-  const d = new Date()
-  d.setDate(d.getDate() - 1)
-  return d.toISOString().slice(0, 10)  // '2025-05-04'
-}
 
 // 위험도 필터링
 const selectedRiskLevel = ref('')

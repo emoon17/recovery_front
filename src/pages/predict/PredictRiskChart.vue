@@ -18,12 +18,11 @@ onMounted(() => {
 
 const getLast7DaysFromYesterday = () => {
   const dates = []
-  const today = new Date()
-  today.setDate(today.getDate() - 1) // 어제로 이동
+  const base = new Date() // 오늘 날짜 (5/6)
 
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(today)
-    d.setDate(today.getDate() - i)
+    const d = new Date(base.getTime())
+    d.setDate(base.getDate() - i)
     dates.push(d.toISOString().slice(0, 10))
   }
 
