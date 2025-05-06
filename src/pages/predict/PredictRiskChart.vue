@@ -31,9 +31,13 @@ const getLast7DaysFromYesterday = () => {
 
 // 위험레벨 카운트
 const generateRiskChartSeries = (list, dates) => {
-  const levels = ['LOW', 'MEDIUM', 'HIGH']
+  const levelColors = {
+    LOW: '#89dd89',      // green
+    MEDIUM: '#fbe557',   // yellow
+    HIGH: '#fdb7b7'      // red
+  }
 
-  return levels.map(level => {
+  return ['LOW', 'MEDIUM', 'HIGH'].map(level => {
     const counts = dates.map(date =>
         list.filter(item =>
             item.riskLevel === level &&
@@ -43,7 +47,8 @@ const generateRiskChartSeries = (list, dates) => {
     return {
       name: level,
       type: 'line',
-      data: counts
+      data: counts,
+      color: levelColors[level]
     }
   })
 }
