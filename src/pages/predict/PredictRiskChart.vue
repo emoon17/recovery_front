@@ -22,9 +22,12 @@ const getLast7DaysFromYesterday = () => {
   base.setDate(base.getDate() - 1) // 오늘 -1 = 어제 기준으로 변경
 
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(base.getTime())
+    const d = new Date(base)
     d.setDate(base.getDate() - i)
-    dates.push(d.toISOString().slice(0, 10))
+    const yyyy = d.getFullYear()
+    const mm = String(d.getMonth() + 1).padStart(2, '0')
+    const dd = String(d.getDate()).padStart(2, '0')
+    dates.push(`${yyyy}-${mm}-${dd}`)
   }
 
   return dates
