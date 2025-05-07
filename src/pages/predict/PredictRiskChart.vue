@@ -19,6 +19,7 @@ onMounted(() => {
 const getLast7DaysFromYesterday = () => {
   const dates = []
   const base = new Date() // 오늘 날짜 (5/6)
+  base.setDate(base.getDate() - 1) // 오늘 -1 = 어제 기준으로 변경
 
   for (let i = 6; i >= 0; i--) {
     const d = new Date(base.getTime())

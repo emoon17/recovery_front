@@ -1,5 +1,6 @@
 <template>
   <div class="risk-dashboard">
+
     <!-- 대시보드 통계 -->
     <PredictDashboard :stats="calculatedStats" />
     <!-- 위험도 추이 -->
