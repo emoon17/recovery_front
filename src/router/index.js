@@ -14,8 +14,8 @@ const routes = [
             { path: 'client', component: Client },
             { path: 'client/register', component: ClientRegister },
             { path: 'transaction', component: Transaction },
-            { path: '', component: RecoveryChart },
-            { path: 'predict', component: PredictRisk },
+            { path: 'recovery', component: RecoveryChart },
+            { path: '', component: PredictRisk },
         ]
     }
 ]

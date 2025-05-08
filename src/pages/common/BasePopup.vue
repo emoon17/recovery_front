@@ -1,6 +1,6 @@
 <template>
   <div v-if="visible" class="popup-overlay">
-    <div class="popup-content">
+    <div class="popup-content" :style="{ width }">
       <div class="popup-header">
         <h3>{{ title }}</h3>
         <button class="close-btn" @click="$emit('close')">X</button>
@@ -15,7 +15,11 @@
 <script setup>
 defineProps({
   visible: Boolean,
-  title: String
+  title: String,
+  width: {
+    type: String,
+    default : '400px'
+  }
 })
 defineEmits(['close'])
 </script>
@@ -57,6 +61,5 @@ defineEmits(['close'])
   font-size: 20px;
   cursor: pointer;
 }
-
 
 </style>

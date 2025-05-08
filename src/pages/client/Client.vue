@@ -1,10 +1,14 @@
 <template>
   <div class="client-page">
     <div class="client-header">
-      <h2>거래처 리스트</h2>
+      <h2>📇 거래처 리스트</h2>
       <!-- 거래처 등록 팝업 -->
       <ClientRegister @submitClient="submitClient"/>
     </div>
+
+    <p style="margin-bottom: 20px; margin-top: 30px;" class="info-note">
+      🏷️ 거래처를 <strong>등록하고 수정·삭제</strong>할 수 있습니다.
+    </p>
 
     <!-- 거래처 리스트 -->
     <ClientList :clients="clients" @selectClient="onClientSelected"/>
@@ -124,6 +128,9 @@ const handleClose = () => {
   align-items: center;
   margin-bottom: 20px;
 }
-
+.info-note {
+  font-size: 17px;
+  color: #495057;
+}
 
 </style>

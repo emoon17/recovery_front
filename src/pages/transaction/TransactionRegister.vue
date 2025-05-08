@@ -3,7 +3,6 @@
 import Button from "primevue/button";
 import InputText from 'primevue/inputtext';
 import BasePopup from "@/pages/common/BasePopup.vue";
-import DatePicker from "@vuepic/vue-datepicker";
 import '@vuepic/vue-datepicker/dist/main.css';
 import {useToast} from 'primevue/usetoast';
 
@@ -24,14 +23,15 @@ const transaction = ref({
   businessNumber: '',
   name: '',
   transactionDate: '',
-  transactionAmount: 0,
-  recoveredAmount: 0,
+  transactionAmount: '',
+  recoveredAmount: '',
   expectedPaymentDate: ''
 });
 
 
 const showSuggestions = ref(false)
 const filteredClients = ref([])
+
 
 // 자동완성용 검색 로직
 const onSearch = () => {
@@ -55,13 +55,25 @@ const selectClient = (item) => {
 
 const handleBlur = () => {
   setTimeout(() => {
-    showSuggestions.value = false
+    if (!document.activeElement.closest('.suggestions')) {
+      showSuggestions.value = false
+    }
+
   }, 100)
 }
 
 
 // 거래처 등록 팝업
 const goToRegister = () => {
+  transaction.value = {
+    clientId: '',
+    businessNumber: '',
+    name: '',
+    transactionDate: '',
+    transactionAmount: '',
+    recoveredAmount: '',
+    expectedPaymentDate: ''
+  };
   emit('open');
 }
 
@@ -105,68 +117,114 @@ const isFormValid = computed(() => {
 
 <template>
   <div class="transaction-header">
-    <h2>거래 관리</h2>
-    <Button
-        icon="pi pi-plus"
-        class="register-btn"
-        @click="goToRegister"
-    />
+    <div class="transaction-header-left">
+      <div class="page-title">
+        <span class="emoji">📋</span>
+        <h2>거래 관리</h2>
+      </div>
+
+    </div>
+    <Button icon="pi pi-plus" class="register-btn" @click="goToRegister" />
   </div>
   <BasePopup
       :visible="showDialog"
       title="거래 등록"
       @close="handleClose"
+      :width="'550px'"
   >
     <div class="form-wrap">
-      <div class="form-item auto-complete">
-        <InputText
-            v-model="transaction.name"
-            @input="onSearch"
-            @focus="onSearch"
-            @blur="handleBlur"
-            placeholder="거래처명"/>
-        <ul v-if="showSuggestions && filteredClients.length" class="suggestions">
-          <li
-              v-for="item in filteredClients"
-              :key="item.businessNumber"
-              @mousedown.prevent="selectClient(item)"
-          >
-            {{ item.name }} ({{ item.businessNumber }})
-          </li>
-        </ul>
+
+      <!-- 거래처명 (자동완성) -->
+      <div class="form-item horizontal auto-complete" >
+        <label class="form-label">거래처명</label>
+        <div style="width: 100%; position: relative;">
+          <InputText
+              v-model="transaction.name"
+              @input="onSearch"
+              @focus="onSearch"
+              @blur="handleBlur"
+          />
+          <ul v-if="showSuggestions && filteredClients.length" class="suggestions">
+            <li
+                v-for="item in filteredClients"
+                :key="item.businessNumber"
+                @mousedown.prevent="selectClient(item)"
+            >
+              {{ item.name }} ({{ item.businessNumber }})
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="form-item">
-        <InputText v-model="transaction.businessNumber" placeholder="사업자번호"/>
+
+      <!-- 사업자번호 -->
+      <div class="form-item horizontal">
+        <label class="form-label">사업자번호</label>
+        <InputText v-model="transaction.businessNumber" />
       </div>
-      <div class="form-item">
-        <DatePicker
+
+      <!-- 거래일자 -->
+      <div class="form-item horizontal">
+        <label class="form-label">거래일자</label>
+<!--        <DatePicker-->
+<!--            v-model="transaction.transactionDate"-->
+<!--            input-class="calendar-input"-->
+<!--            placement="bottom"-->
+<!--            placeholder="거래일자"-->
+<!--            date-format="yy.mm.dd"-->
+<!--            showIcon-->
+<!--            fluid-->
+<!--        />-->
+        <Calendar
             v-model="transaction.transactionDate"
-            input-class="calendar-input"
-            placement="bottom"
-            placeholder="거래일자"
-            date-format="yy.mm.dd"
+            dateFormat="yy-mm-dd"
+            showIcon
+            :panelStyle="{ marginBottom: '6px' }"
+            :showButtonBar="true"
+            :touchUI="false"
         />
       </div>
-      <div class="form-item">
+
+      <!-- 외상금액 -->
+      <div class="form-item horizontal">
+        <label class="form-label">외상금액</label>
         <InputText
             v-model="transaction.transactionAmount"
             @input="onlyNumberInput('transactionAmount')"
             :value="formatCurrency(transaction.transactionAmount)"
-            placeholder="외상금액"/>
+        />
       </div>
-      <div class="form-item">
+
+      <!-- 회수금액 -->
+      <div class="form-item horizontal">
+        <label class="form-label">회수금액</label>
         <InputText
             v-model="transaction.recoveredAmount"
             @input="onlyNumberInput('recoveredAmount')"
             :value="formatCurrency(transaction.recoveredAmount)"
-            placeholder="회수금액"/>
+        />
       </div>
+
+      <!-- 회수예정일 (추가한 경우) -->
+      <div class="form-item horizontal">
+        <label class="form-label">회수예정일</label>
+        <Calendar
+            v-model="transaction.expectedPaymentDate"
+            dateFormat="yy-mm-dd"
+            showIcon
+            :panelStyle="{ marginBottom: '6px' }"
+            :showButtonBar="true"
+            :touchUI="false"
+        />
+      </div>
+
+      <!-- 등록 버튼 -->
       <div class="form-item">
         <Button
             label="등록하기"
             @click="insertTransaction"
             class="submit-btn"
-            :disabled="!isFormValid"/>
+            :disabled="!isFormValid"
+        />
       </div>
     </div>
   </BasePopup>
@@ -203,6 +261,8 @@ const isFormValid = computed(() => {
   flex-direction: column;
   gap: 12px;
   padding: 10px 0;
+  max-width: 480px;   /* ✅ 최대 너비 제한 추가 */
+  margin: 0 auto;
 }
 
 
@@ -210,9 +270,9 @@ const isFormValid = computed(() => {
   width: 100%;
 }
 
-.form-item :deep(.p-inputtext),
-.form-item :deep(.p-calendar) {
+.form-item :deep(.p-inputtext){
   width: 100%;
+  padding-right: 3.5rem;
 }
 
 .submit-btn {
@@ -228,17 +288,20 @@ const isFormValid = computed(() => {
 
 
 /* 입력창 스타일 */
+.form-item :deep(.p-inputtext),
 .form-item :deep(.dp__input) {
-  width: 100%;
-  height: 38px;
-  padding: 0 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  height: 36px;
   font-size: 14px;
-  box-sizing: border-box;
-  transition: border 0.3s;
+  padding: 4px 12px;
+  text-align: center;
 }
 
+.form-item :deep(.dp__input) {
+  height: 36px;
+  font-size: 14px;
+  padding: 4px 12px;
+  text-align: center;
+}
 
 .form-item :deep(.dp__input:focus) {
   border-color: #4e4e53;
@@ -296,5 +359,52 @@ const isFormValid = computed(() => {
 .suggestions li:hover {
   background-color: #f0f0f0;
 }
+
+
+.form-item.horizontal {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.form-label {
+  width: 100px; /* 기존 90px보다 넉넉하게 */
+  white-space: nowrap; /* 한 줄로 표시 */
+  font-weight: 500;
+  color: #495057;
+  text-align: right;
+  margin-right: 0;
+}
+
+:deep(.p-calendar) {
+  width: 100%;
+  .p-inputtext {
+    height: 36px;
+    text-align: center;
+  }
+}
+:deep(.p-datepicker) {
+  position: absolute !important;
+  left: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  z-index: 9999 !important;
+  box-sizing: border-box;
+}
+:deep(.p-datepicker-calendar) {
+  width: 100%;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.page-title .emoji {
+  font-size: 24px;
+}
+
 
 </style>

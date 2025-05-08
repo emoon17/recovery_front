@@ -4,12 +4,22 @@
     <!-- 거래 등록 -->
     <TransactionRegister :showDialog="showDialog" :clients="clients" @insertTransaction="insertTransaction"
                          @open="handleOpen" @close="handleClose"/>
-
+<!--    <p class="page-subtext">※ 거래 내역을 등록하고 회수 일정을 관리하세요.</p>-->
+    <p style="margin-bottom: 20px; margin-top: 30px;" class="info-note">
+      📌 아래 거래 내역은 <strong>최신 거래일 기준</strong>으로 정렬되어 표시됩니다.
+    </p>
     <!-- 검색 폼 -->
     <TransactionSearchForm :searchForm="searchForm" :clients="clients" @fetchTransactionList="fetchTransactionList"/>
 
     <!-- 거래 리스트 테이블 -->
     <TransactionList :transactions="transactions"/>
+
+<!--    <TransactionDetail-->
+<!--        :visible="showDetail"-->
+<!--        :transaction="selectedTransaction"-->
+<!--        @close="showDetail = false"-->
+<!--        @edit="handleEdit"-->
+<!--    />-->
 
   </div>
 </template>
@@ -23,6 +33,7 @@ import api from "@/api/axios.js";
 import {transactionApi} from "@/api/transaction.js";
 import {clientApi} from "@/api/client.js";
 import {useToast} from 'primevue/usetoast';
+import TransactionDetail from "@/pages/transaction/TransactionDetail.vue";
 
 const toast = useToast();
 
@@ -120,6 +131,7 @@ const insertTransaction = async (transaction) => {
     const res = await api.post(transactionApi.url.insertTransaction, transaction);
     console.log("res::: ", res);
     if (res.data.success === 200) {
+      await fetchTransactionList(searchForm.value);
       toast.add({severity: 'success', summary: '등록 완료', detail: '거래가 등록되었습니다.', life: 3000})
     } else {
       toast.add({severity: 'error', summary: '등록 실패', detail: '서버 오류가 발생했습니다.', life: 3000});
@@ -146,5 +158,10 @@ const handleClose = () => {
   padding: 20px;
 }
 
+.page-subtext {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
 
 </style>

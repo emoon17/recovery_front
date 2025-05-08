@@ -95,6 +95,7 @@ const handleBlur = () => {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  margin-left : 5px;
   border: none !important;
 }
 

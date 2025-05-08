@@ -133,7 +133,7 @@ const submitClient = () => {
       iconPos="left"
       @click="goToRegister"
       class="register-btn"/>
-  <BasePopup :visible="showDialog" title="거래처 등록" @close="showDialog = false" >
+  <BasePopup :visible="showDialog" title="거래처 등록" :width="'550px'" @close="showDialog = false" >
     <div class="form-wrap">
       <div class="form-item">
         <label>사업자번호</label>
