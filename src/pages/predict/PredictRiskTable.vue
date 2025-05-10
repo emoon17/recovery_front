@@ -2,39 +2,21 @@
 
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
-import {useToast} from 'primevue/usetoast'
+
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-
-const toast = useToast()
+import {computed} from "vue";
 
 const props = defineProps({
   riskOptions: Array,
   filteredList: Array,
   predictionList: Array,
   selectedDate: String
-})
+});
 
-const selectedRiskLevel = defineModel('selectedRiskLevel')
+const emit = defineEmits(['sendMailRequest']);
 
-
-// 메일 발송
-const sendMail = () => {
-  const highList = props.predictionList.filter(p => p.riskLevel === 'HIGH')
-  const names = highList.map(p => `${p.name}`).join(', ')
-
-  if (highList.length === 0) {
-    alert('📭 HIGH 등급 대상자가 없습니다.')
-    return
-  }
-
-  toast.add({
-    severity: 'info',
-    summary: '📩 메일 발송 완료',
-    detail: `HIGH 등급 대상자인 [ ${names} ]에게 메일이 발송되었습니다.`,
-    life: 4000
-  })
-}
+const selectedRiskLevel = defineModel('selectedRiskLevel');
 
 const getRowClass = (data) => {
   const level = data.riskLevel?.toLowerCase();
@@ -48,6 +30,22 @@ const realDelayBody = (rowData) => {
 const absErrorBody = (rowData) => {
   return rowData.absError !== null ? rowData.absError : '-';
 };
+
+const highList = computed(() => {
+  const list = props.predictionList.filter(p =>
+      p.riskLevel === 'HIGH' &&
+      p.createdAt?.slice(0, 10) === props.selectedDate
+  );
+  console.log("list :: ", list);
+  return list;
+})
+
+const emitHighList = () => {
+  const evaluatedList = highList.value;
+  console.log('emit 전 최종 highList:', evaluatedList);
+  emit('sendMailRequest', evaluatedList);
+}
+
 </script>
 
 <template>
@@ -67,7 +65,7 @@ const absErrorBody = (rowData) => {
             placeholder="전체"
             style="width: 150px"
         />
-        <Button icon="pi pi-send" label="메일 발송" severity="info" @click="sendMail" />
+        <Button icon="pi pi-send" label="메일 발송" severity="info" @click="emitHighList"/>
         <span class="mail-desc">※ HIGH 등급 대상자에게만 메일이 발송됩니다.</span>
       </div>
     </div>

@@ -12,6 +12,7 @@
         :filteredList="filteredList"
         :predictionList="predictionList"
         :selectedDate="selectedDate"
+        @sendMailRequest="sendMail"
     />
 
   </div>
@@ -24,7 +25,9 @@ import PredictRiskTable from "@/pages/predict/PredictRiskTable.vue";
 import PredictRiskChart from "@/pages/predict/PredictRiskChart.vue";
 import api from "@/api/axios.js";
 import {predictApi} from "@/api/predict.js";
+import {useToast} from 'primevue/usetoast'
 
+const toast = useToast()
 const riskOptions = [
   { label: '전체', value: '' },
   { label: 'HIGH', value: 'HIGH' },
@@ -50,9 +53,60 @@ const fetchAllPredicts = async () =>{
         .reverse()[0]  // 가장 최근 날짜
 
     selectedDate.value = latestDate
+    console.log(res);
   }catch (e){
     console.log("fetchAllPredicts error ::: ", e);
   }
+}
+
+/**
+ * 메일전송
+ * */
+const sendMail = async (highList = []) => {
+
+  const names = highList.map(p => `${p.name}`).join(', ')
+
+  if (highList.length === 0) {
+    toast.add({
+      severity: 'error',
+      summary: '📩 메일 발송 실패',
+      detail: `📭 HIGH 등급 대상자가 없습니다.`,
+      life: 6000
+    });
+    return
+  }
+
+  try {
+    toast.add({
+      severity: 'info',
+      summary: '🚀 메일 발송 중 ...🚀',
+      detail: `잠시만 기다려주세요! 열심히 메일을 발송하고 있습니다.`,
+      life: 99999,
+      closable: false,
+      id: 'sending-toast'
+    });
+    const res = await api.post(predictApi.url.sendTestMail, highList);
+    console.log("res ", res);
+
+    if(res.data.success === 200 ){
+      toast.remove({id :'sending-toast'});
+      toast.add({
+        severity: 'success',
+        summary: '📩 메일 발송 완료 📩 ',
+        detail: `HIGH 등급 대상자인 [ ${names} ]에게 메일이 발송되었습니다.`,
+        life: 6000
+      });
+    }
+  } catch (e){
+    toast.add({
+      severity: 'error',
+      summary: '📩 메일 발송 실패 📩 ',
+      detail: `'📤  서버에 오류로 메일 발송에 실패하였습니다.`,
+      life: 4000
+    });
+  }
+
+
 }
 
 onMounted(()=> {
