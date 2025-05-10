@@ -167,20 +167,21 @@ const yesterdayStr = (() => {
 <style scoped>
 .detail-popup .row {
   display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  font-size: 15px;
+  justify-content: flex-start; /* label + value가 왼쪽 정렬로 붙게 함 */
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .label {
-  min-width: 120px;  /* 라벨 넓이 고정 */
-  font-weight: bold;
-  color: #333;
+  width: 285px;
+  font-weight: 600;
+  text-align: left; /* 라벨도 왼쪽 정렬 */
 }
 
 .value {
-  padding-left: 10px;   /* 필요 시 추가 */
-  text-align: left;     /* 첫 글자 기준으로 정렬 */
+  flex: 1;
+  text-align: left; /* 💡 이 부분이 핵심 */
+  color: #333;
 }
 
 .custom-tooltip-text strong {
