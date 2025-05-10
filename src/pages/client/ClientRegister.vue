@@ -127,6 +127,7 @@ const submitClient = () => {
 
 <template>
   <div class="client-header">
+
   <!-- 거래처 등록 팝업 -->
   <Button
       icon="pi pi-plus"
@@ -254,4 +255,5 @@ const submitClient = () => {
   flex: 1;
   min-width: 350px;
 }
+
 </style>

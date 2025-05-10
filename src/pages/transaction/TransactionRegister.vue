@@ -132,6 +132,9 @@ const isFormValid = computed(() => {
       @close="handleClose"
       :width="'550px'"
   >
+    <div class="notice-text" style="margin-bottom:10px;">
+      💡 거래 등록은 <strong>거래처 등록 후 </strong>거래 등록이 가능합니다. 💡
+    </div>
     <div class="form-wrap">
 
       <!-- 거래처명 (자동완성) -->
@@ -372,7 +375,7 @@ const isFormValid = computed(() => {
   white-space: nowrap; /* 한 줄로 표시 */
   font-weight: 500;
   color: #495057;
-  text-align: right;
+  text-align: left;
   margin-right: 0;
 }
 
@@ -405,6 +408,19 @@ const isFormValid = computed(() => {
 .page-title .emoji {
   font-size: 24px;
 }
+:deep(.p-calendar) {
+  .p-datepicker-trigger {
+    background-color: #b0b0b8 !important;
+    border: 1px solid #b0b0b8 !important;
+    color: #fff !important; /* 아이콘 색상 */
+  }
+}
 
+.notice-text {
+  font-size: 13px;
+  color: #888;
+  text-align: right;
+  margin-right: 8px;
 
+}
 </style>

@@ -86,7 +86,6 @@ const sendMail = async (highList = []) => {
       id: 'sending-toast'
     });
     const res = await api.post(predictApi.url.sendTestMail, highList);
-    console.log("res ", res);
 
     if(res.data.success === 200 ){
       toast.remove({id :'sending-toast'});
