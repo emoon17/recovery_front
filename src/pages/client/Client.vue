@@ -14,7 +14,7 @@
     <ClientList :clients="clients" @selectClient="onClientSelected"/>
     <!-- 거래처 상세보기 팝업 -->
     <ClientDetail
-        :selectedClient="selectedClient"
+        :selectedClient="editClient"
         :showDialog="showDialog"
         @close="handleClose"
         @updateClient="updateClient"
@@ -39,6 +39,8 @@ const toast = useToast();
 const clients = ref([]);
 // 선택된 거래처
 const selectedClient = ref({});
+// 수정 된 거래처
+const editClient = ref({});
 const showDialog = ref(false);
 
 onMounted(() => {
@@ -83,6 +85,10 @@ const updateClient = async (client) => {
   try {
     await api.post(clientApi.url.updateClient, client);
     await fetchClients();
+    const index = clients.value.findIndex(c => c.clientId === client.clientId);
+    if (index !== -1) {
+      clients.value[index] = { ...client };
+    }
     handleClose();
     toast.add({severity: 'success', summary: '수정 완료', detail: '거래처 정보가 수정되었습니다.', life: 3000});
   } catch (e) {
@@ -110,7 +116,7 @@ const deleteClient = async (clientId) => {
 
 const onClientSelected = (client) => {
   selectedClient.value = client;
-  console.log("Client >>>> onClientSelected ::: ", selectedClient.value);
+  editClient.value = {...client};
   showDialog.value = true;
 };
 
