@@ -1,5 +1,60 @@
-# Vue 3 + Vite
+# 📘 WEHAGO 클론 프로젝트 – 프론트엔드
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 🖥️ 개요
+**거래처 관리 및 회수 예측 기능**을 구현한 Vue 3 기반 프론트엔드입니다.  
+거래처 등록, 거래 입력, 예측 결과 확인 및 통계 시각화 기능을 제공합니다.  
+Spring Boot 백엔드 및 Flask ML 서버와 REST API를 통해 연동됩니다.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+---
+
+## 🔧 기술 스택
+- **Vue 3 (Composition API)**
+- **PrimeVue** – UI 컴포넌트
+- **Axios** – API 통신
+- **Vite** – 개발 서버 및 빌드 도구
+- **SCSS / CSS**
+
+---
+
+### 🔁 상태 관리
+- 상태 관리: 단방향 데이터 흐름 기반 구성
+  - 부모 → 자식: `props`로 필터 상태, 선택된 항목 등 전달
+  - 자식 -> 부모 `emit`으로 이벤트 전달 → 부모에서 API 호출 및 계산 처리 담당
+
+--- 
+
+## 📌 주요 기능
+
+### 📇 거래처 관리
+- 거래처 상세보기 / 등록 / 수정 / 삭제 
+- 자동완성 기능 (거래 등록 시 거래처 선택용)
+- 사업자번호 입력 시 자동 포맷팅 (`000-00-00000`)
+
+### 💰 거래 등록 / 관리
+- 거래일자 및 회수예정일 입력 (DatePicker)
+- 금액 입력 시 쉼표 포맷팅 처리
+- 등록된 거래 리스트에서 상세 보기 및 수정
+
+### 📈 회수 지연 예측 차트 / 리스트
+- 최근 7일간의 예측 데이터를 기반으로 회수 지연 위험도를 시각화
+- 총 예측 건수, 정확히 일치한 건수, 평균 오차일 요약 카드 제공
+- 예측 등급(LOW, MEDIUM, HIGH)별 일간 추이 그래프 표시
+- 날짜 및 위험도별 필터링 가능
+- 예측 결과 테이블:
+    - 거래처명, 거래일자, 예측 지연일, 실제 지연일, 오차, 위험도, AI 생성 코멘트
+- “HIGH” 등급 대상에게만 **메일 발송 버튼** 노출 및 발송 가능
+- 우측 상단에 AI 회귀모델 기반 예측임을 설명하는 안내 메시지 포함
+
+### 📊 거래처 회수율 보드 / 차트
+- 각 거래처의 회수율 및 평균 회수일을 산점도로 시각화
+- 색상으로 거래금액 구간 구분:
+    - 🟢 100만 원 이하
+    - 🟠 5,000만 원 이하
+    - 🔴 5,000만 원 초과
+- 상단 카드 박스에 요약 정보 표시:
+    - 평균 회수율
+    - 평균 회수일
+    - 전체 거래처 수
+- 각 점을 클릭하면 거래처 상세 정보 확인 가능
+
+
