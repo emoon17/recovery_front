@@ -119,7 +119,6 @@ const isFormValid = computed(() => {
 
 // 등록
 const submitClient = () => {
-  console.log("ClientRegister >>> submitClient ::: ", newClient.value);
   emit('submitClient', newClient.value);
 }
 

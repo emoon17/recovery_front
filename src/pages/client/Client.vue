@@ -63,7 +63,6 @@ const fetchClients = async () => {
  * 거래처 등록
  * */
 const submitClient = async (newClient) => {
-  console.log("newClient :::: " , newClient);
   try {
     const res = await api.post(clientApi.url.insertClient, newClient);
     if (res.data.success === 200) {
@@ -81,7 +80,6 @@ const submitClient = async (newClient) => {
  * 거래처 수정
  * */
 const updateClient = async (client) => {
-  console.log("Client >>> updateClient ::: ", client);
   try {
     await api.post(clientApi.url.updateClient, client);
     await fetchClients();
@@ -103,7 +101,6 @@ const updateClient = async (client) => {
  * */
 const deleteClient = async (clientId) => {
   try {
-    console.log("Client >>> deleteClient", clientId);
     await api.post(clientApi.url.deleteClient, {clientId: clientId});
     await fetchClients();
     handleClose();

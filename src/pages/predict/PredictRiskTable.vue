@@ -36,13 +36,11 @@ const highList = computed(() => {
       p.riskLevel === 'HIGH' &&
       p.createdAt?.slice(0, 10) === props.selectedDate
   );
-  console.log("list :: ", list);
   return list;
 })
 
 const emitHighList = () => {
   const evaluatedList = highList.value;
-  console.log('emit 전 최종 highList:', evaluatedList);
   emit('sendMailRequest', evaluatedList);
 }
 
@@ -65,7 +63,7 @@ const emitHighList = () => {
             placeholder="전체"
             style="width: 150px"
         />
-        <Button icon="pi pi-send" label="메일 발송" severity="info" @click="emitHighList"/>
+        <Button icon="pi pi-send " label="메일 발송" class="custom-send-button" @click="emitHighList"/>
         <span class="mail-desc">※ HIGH 등급 대상자에게만 메일이 발송됩니다.</span>
       </div>
     </div>
@@ -78,6 +76,7 @@ const emitHighList = () => {
         :rowClass="getRowClass"
     >
       <Column field="name" header="거래처명" />
+      <Column field="transactionDate"  header="거래일자"/>
       <Column field="predictedDelay" header="예측 지연일" />
       <Column header="실제 지연일">
         <template #body="slotProps">
@@ -169,5 +168,15 @@ const emitHighList = () => {
   margin-bottom: 12px;
   font-size: 0.95rem;
   color: #444;
+}
+
+.custom-send-button {
+  background-color: #8e8e93; /* 예: 붉은색 */
+  border-color: #8e8e93;
+  color: white;
+}
+.custom-send-button:hover {
+  background-color: #4e4e53;
+  border-color: #4e4e53;
 }
 </style>

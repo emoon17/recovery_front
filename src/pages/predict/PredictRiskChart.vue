@@ -11,6 +11,7 @@ const chartRef = ref()
 onMounted(() => {
   chartRef.value?.chart.on('click', params => {
     if (params.name) {
+      console.log("params:: ", params);
       selectedDate.value = params.name
     }
   })

@@ -31,7 +31,6 @@ const statsCard = computed(() => ({
 const fetchRecoveryAllStats = async () => {
   try {
     const res = await api.get(statApi.url.getRecoveryAllStats);
-    console.log("res :::: ", res);
     stats.value = res.data.data;
   }catch (e) {
     console.log("fetchRecoveryAllStats error ::: ", e);

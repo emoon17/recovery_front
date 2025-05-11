@@ -27,7 +27,7 @@ const goToEdit = async () => {
 
 // 수정 완료 버튼 클릭 시
 const submitChanges = () => {
-  console.log("Client Detail >>> selectedClient :: ", props.selectedClient);
+  console.log("Client Detail >>> selectedClient emit:: ");
   emit('updateClient', props.selectedClient);
   isEditable.value = false; // 수정 모드를 종료
 }

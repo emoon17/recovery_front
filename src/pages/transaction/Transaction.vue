@@ -81,7 +81,6 @@ const selectedRow = ref(null);
 const openDetail = (row) => {
   selectedRow.value = row;
   showDetail.value = true;
-  console.log("row :: ", row)
 }
 
 // 금액 포맷팅
@@ -100,7 +99,6 @@ const formatBusinessNumber = (bn) => {
  * transaction 전체 조회
  * */
 const fetchTransactionList = async (searchForm) => {
-  console.log('검색조건:', searchForm);
 
   try {
     const res = await api.post(transactionApi.url.getAllTransactions, searchForm || {});
@@ -111,7 +109,6 @@ const fetchTransactionList = async (searchForm) => {
       recoveredAmount: formatCurrency(item.recoveredAmount),
       businessNumber: formatBusinessNumber(item.businessNumber),
     }));
-    console.log("transactions.value::: ", transactions.value);
   } catch (e) {
     console.log("fetchTransactionList error :::  ", e);
   }
@@ -124,7 +121,6 @@ const fetchTransactionList = async (searchForm) => {
 const fetchClientList = async () => {
   try {
     const res = await api.get(clientApi.url.getAllClients);
-    console.log("거래처 조회 ::: ", res);
     clients.value = res.data.data;
   } catch (e) {
     console.log("Transacion >>> fetchClientList error ::: ", e);
@@ -137,7 +133,6 @@ const fetchClientList = async () => {
 const insertTransaction = async (transaction) => {
   try {
     const res = await api.post(transactionApi.url.insertTransaction, transaction);
-    console.log("res::: ", res);
     if (res.data.success === 200) {
       await fetchTransactionList(searchForm.value);
       toast.add({severity: 'success', summary: '등록 완료', detail: '거래가 등록되었습니다.', life: 3000})
@@ -155,10 +150,8 @@ const insertTransaction = async (transaction) => {
  * 거래 수정
  * */
 const updateTransaction = async (detail) => {
-  console.log("detaild :::: ", detail)
   try {
     const res = await api.post(transactionApi.url.updateTransaction, detail);
-    console.log(" res :::: ", res);
     if(res.data.success === 200) {
       await fetchTransactionList(searchForm.value);
       selectedRow.value = detail;

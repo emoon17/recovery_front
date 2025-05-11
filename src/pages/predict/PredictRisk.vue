@@ -53,7 +53,6 @@ const fetchAllPredicts = async () =>{
         .reverse()[0]  // 가장 최근 날짜
 
     selectedDate.value = latestDate
-    console.log(res);
   }catch (e){
     console.log("fetchAllPredicts error ::: ", e);
   }
@@ -130,8 +129,6 @@ const filteredList = computed(() =>
         (!selectedDate.value || item.createdAt?.slice(0, 10) === selectedDate.value)
     )
 )
-
-
 
 </script>
 

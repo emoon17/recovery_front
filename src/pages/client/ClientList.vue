@@ -10,7 +10,7 @@ defineProps({
 const emit = defineEmits(['selectClient']);
 
 const onRowClick = (e) => {
-  console.log("ClientList >>> emit ::: ", e.data);
+  console.log("ClientList >>> emit ::: ");
   emit('selectClient', e.data);
 }
 
