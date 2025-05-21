@@ -42,10 +42,6 @@ onMounted(()=> {
 });
 
 const accessLog = async () => {
-  const params = new URLSearchParams(window.location.search);
-  const utmSource = params.get("utm_source");   // jobkorea
-  const utmMedium = params.get("utm_medium");
-  console.log("utmSource, " , utmSource);
   try{
     const res = await api.post(accessApi.url.accessLogInsert);
     console.log("Recovery");
