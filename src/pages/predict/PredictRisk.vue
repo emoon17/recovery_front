@@ -26,6 +26,7 @@ import PredictRiskChart from "@/pages/predict/PredictRiskChart.vue";
 import api from "@/api/axios.js";
 import {predictApi} from "@/api/predict.js";
 import {useToast} from 'primevue/usetoast'
+import {accessApi} from "@/api/access.js";
 
 const toast = useToast()
 const riskOptions = [
@@ -34,6 +35,20 @@ const riskOptions = [
   { label: 'MEDIUM', value: 'MEDIUM' },
   { label: 'LOW', value: 'LOW' }
 ]
+
+onMounted(()=> {
+  accessLog();
+  fetchAllPredicts();
+});
+
+const accessLog = async () => {
+  try{
+    const res = await api.post(accessApi.url.accessLogInsert);
+    console.log("Recovery");
+  } catch (e){
+    console.log("접근 실패 : : ", e);
+  }
+}
 
 // 예측 결과
 const predictionList = ref([]);
@@ -107,9 +122,6 @@ const sendMail = async (highList = []) => {
 
 }
 
-onMounted(()=> {
-  fetchAllPredicts();
-})
 
 // 회수지연 위험 분석 통계 계산
 const calculatedStats = computed(() => ({
