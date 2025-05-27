@@ -207,18 +207,18 @@ const isFormValid = computed(() => {
         />
       </div>
 
-      <!-- 회수예정일 (추가한 경우) -->
-      <div class="form-item horizontal">
-        <label class="form-label">회수예정일</label>
-        <Calendar
-            v-model="transaction.expectedPaymentDate"
-            dateFormat="yy-mm-dd"
-            showIcon
-            :panelStyle="{ marginBottom: '6px' }"
-            :showButtonBar="true"
-            :touchUI="false"
-        />
-      </div>
+<!--      &lt;!&ndash; 회수예정일 (추가한 경우) &ndash;&gt;-->
+<!--      <div class="form-item horizontal">-->
+<!--        <label class="form-label">회수예정일</label>-->
+<!--        <Calendar-->
+<!--            v-model="transaction.expectedPaymentDate"-->
+<!--            dateFormat="yy-mm-dd"-->
+<!--            showIcon-->
+<!--            :panelStyle="{ marginBottom: '6px' }"-->
+<!--            :showButtonBar="true"-->
+<!--            :touchUI="false"-->
+<!--        />-->
+<!--      </div>-->
 
       <!-- 등록 버튼 -->
       <div class="form-item">
