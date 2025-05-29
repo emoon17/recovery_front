@@ -74,22 +74,23 @@ const emitHighList = () => {
         :rows="10"
         :rowsPerPageOptions="[10, 20, 30]"
         :rowClass="getRowClass"
+        sortMode="multiple"
     >
-      <Column field="name" header="거래처명" />
-      <Column field="transactionDate"  header="거래일자"/>
-      <Column field="predictedDelay" header="예측 지연일" />
-      <Column header="실제 지연일">
+      <Column field="name" header="거래처명" sortable  />
+      <Column field="transactionDate"  header="거래일자" sortable />
+      <Column field="predictedDelay" header="예측 지연일" sortable  />
+      <Column field="realDelay" header="실제 지연일" sortable >
         <template #body="slotProps">
           {{ slotProps.data.realDelay !== null ? slotProps.data.realDelay : '미회수' }}
         </template>
       </Column>
-      <Column header="오차">
+      <Column field="absError" header="오차" sortable >
         <template #body="slotProps">
           {{ slotProps.data.absError !== null ? slotProps.data.absError : '-' }}
         </template>
       </Column>
-      <Column field="riskLevel" header="위험도" />
-      <Column field="comment" header="코멘트" />
+      <Column field="riskLevel" header="위험도" sortable  />
+      <Column field="comment" header="코멘트"  sortable />
     </DataTable>
   </div>
 </template>

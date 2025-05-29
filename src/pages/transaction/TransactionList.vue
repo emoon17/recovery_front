@@ -11,6 +11,8 @@ const emit = defineEmits(['rowSelected'])
 const onRowClick = (e) => {
   emit('rowSelected', e.data)
 }
+
+
 </script>
 
 <template>
@@ -24,43 +26,52 @@ const onRowClick = (e) => {
         :rows="10"
         :rowsPerPageOptions="[10, 20, 30]"
         @row-click="onRowClick"
+        sortMode="multiple"
     >
       <Column
           field="businessNumber"
           header="사업자번호"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
+          sortable
       />
       <Column
           field="name"
           header="거래처명"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
+          sortable
       />
       <Column
           field="transactionDate"
           header="거래날짜"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
+          sortable
       />
       <Column
           field="transactionAmount"
           header="외상대"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
+          sortable
       />
       <Column
           header="회수금액"
+          field="recoveredAmount"
           headerClass="custom-header-center"
-          :bodyStyle="{ textAlign: 'center' }">
+          :bodyStyle="{ textAlign: 'center' }"
+          sortable>
         <template #body="slotProps">
           {{ slotProps.data.recoveredAmount !== "0" ? slotProps.data.recoveredAmount : '-' }}
         </template>
       </Column>
       <Column
           header="회수날짜"
+          field="recoveredDate"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
+          sortable
       >
         <template #body="slotProps">
           {{ slotProps.data.recoveredDate !== null ? slotProps.data.recoveredDate : '-' }}
@@ -71,9 +82,12 @@ const onRowClick = (e) => {
           header="회수예정일"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
+          :sortable="true"
+          :sortFunction="(e) => new Date(e.data1.expectedPaymentDate) - new Date(e.data2.expectedPaymentDate)"
       />
       <Column
           header="회수 완료 여부"
+          field="recoveryStatus"
           headerClass="custom-header-center"
           :bodyStyle="{ textAlign: 'center' }"
       >
